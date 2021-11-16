@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Royliu/AndroidStudioProjects/Guess/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/Users/Royliu/AndroidStudioProjects/Guess/app/src/main/res/layout/activity_main.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Royliu/AndroidStudioProjects/Guess/app/src/main/res/layout/activity_material.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Royliu/AndroidStudioProjects/Guess/app/src/main/res/layout/content_material.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Royliu/AndroidStudioProjects/Guess/app/src/main/res/layout/fragment_first.xml" value="0.22" />
+        <entry key="..\:/Users/Royliu/AndroidStudioProjects/Guess/app/src/main/res/layout/fragment_second.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Royliu/AndroidStudioProjects/Guess/app/src/main/res/layout/linear_main.xml" value="0.22" />
       </map>
     </option>

@@ -1,9 +1,13 @@
 package com.roy.guess
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -38,21 +42,31 @@ class MaterialActivity : AppCompatActivity() {
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.fab.setOnClickListener { view ->
-            AlertDialog.Builder(this)
-                .setTitle(getString(R.string.replay_game))
-                .setMessage(getString(R.string.are_you_sure))
-                .setPositiveButton(getString(R.string.ok)) { dialog, which ->
-                    secretNumber.reset()
-                    updateCountNumber()
-                    markButtonEnabled(ok_button)
-
-                    ed_number.setText("")
-                }
-                .setNeutralButton(getString(R.string.cancel), null)
-                .show()
-
+            replay()
         }
         updateCountNumber()
+        val count: Int = getSharedPreferences("guess", Context.MODE_PRIVATE)
+            .getInt("REC_COUNTER", -1)
+        val nick: String? = getSharedPreferences("guess", Context.MODE_PRIVATE)
+            .getString("REC_NICKNAME", null)
+        Log.d(TAG, "data: $count/$nick")
+        Log.d(TAG, "onCreate: " + secretNumber.secret)
+    }
+
+
+    private fun replay() {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.replay_game))
+            .setMessage(getString(R.string.are_you_sure))
+            .setPositiveButton(getString(R.string.ok)) { dialog, which ->
+                secretNumber.reset()
+                updateCountNumber()
+                markButtonEnabled(ok_button)
+
+                ed_number.setText("")
+            }
+            .setNeutralButton(getString(R.string.cancel), null)
+            .show()
     }
 
     //    override fun onSupportNavigateUp(): Boolean {
@@ -79,8 +93,31 @@ class MaterialActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(alertTitle)
             .setMessage(message)
-            .setPositiveButton(getString(R.string.ok), null).show()
+            .setPositiveButton(getString(R.string.ok)) { dialog, whitch ->
+                toRecordScreen(diff)
+            }.show()
+
+
     }
+
+    fun toRecordScreen(diff: Int) {
+        if (diff == 0) {
+            val intent = Intent(this, RecordActivity::class.java)
+            intent.putExtra("COUNTER", secretNumber.count)
+            resultLauncher.launch(intent)
+
+        }
+    }
+
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val nickname = result.data?.getStringExtra("NICK")
+                replay()
+                Log.d(TAG, "nickname: $nickname")
+            }
+        }
+
 
     fun victoryOrDefeat(diff: Int): String {
         var message = getString(R.string.yes_you_got_it)
@@ -120,4 +157,5 @@ class MaterialActivity : AppCompatActivity() {
         ok_button.setText(getString(R.string.ok))
         button?.isEnabled = true
     }
+
 }
